@@ -1,0 +1,25 @@
+FROM alpine:3.8
+
+RUN apk --no-cache add wget openjdk8-jre-base && \
+    apk --no-cache add --virtual build-dependencies gcc musl-dev && \
+    apk --no-cache add python3-dev && \
+    pip3 install pylint && \
+    apk del build-dependencies
+
+
+WORKDIR /
+RUN wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492.zip && \
+    unzip -qq sonar-scanner-cli-3.3.0.1492.zip && \
+    rm sonar-scanner-cli-3.3.0.1492.zip && \
+    mv sonar-scanner-3.3.0.1492 sonar-scanner
+WORKDIR /sonar-scanner
+
+ENV SONAR_RUNNER_HOME=/sonar-scanner
+ENV PATH $PATH:/sonar-scanner/bin
+
+CMD sonar-scanner -Dsonar.projectBaseDir=/sonar-scanner \
+                  -Dsonar.sources=/sonar-scanner/src \
+                  -Dsonar.projectKey=TestProject \
+                  -Dsonar.projectName=TestProject \
+                  -Dsonar.projectVersion=1.0 \
+                  -Dsonar.sourceEncoding=UTF-8
