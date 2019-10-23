@@ -13,12 +13,16 @@ pipeline {
             }
         }
 
-        sonarScannerImage.inside('-ti -v ./src:/can/src --network host') {
-                stage('Code compliance') {
-                    steps {
-                        echo 'Code compliance testing...'
-                    }
+        stage('Code compliance') {
+            agent {
+                dockerfile {
+                    filename 'sonarscan'
+                    dir 'dockerfiles'
+                    args '-ti -v ./src:/sonar-scanner/src --network host'
                 }
+            }
+            steps {
+                echo 'Code compliance tests...'
             }
         }
 
