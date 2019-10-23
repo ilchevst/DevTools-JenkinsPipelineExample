@@ -1,11 +1,4 @@
 pipeline {
-    agent {
-//         docker {
-//             image 'sonarqube'
-//             args '-d --name sonarqube -p 9000:9000'
-//         }
-    }
-
     options {
         newContainerPerStage()
         timeout(time: 30, unit: 'MINUTES')
@@ -18,14 +11,10 @@ pipeline {
                 echo 'Building..'
             }
         }
-
-        sh 'pwd'
-        def sonarScannerImage = docker.build("sonar-scanner-image", "./dockerfiles/sonarscan")
-        sonarScannerImage.withRun('-ti -v ./src:/can/src --network host') {
-            stage('Code compliance') {
-                steps {
-                    echo 'Code compliance tests..'
-                }
+        stage('Code compliance') {
+            def sonarScannerImage = docker.build("sonar-scanner-image", "./dockerfiles/sonarscan")
+            sonarScannerImage.withRun('-ti -v ./src:/can/src --network host') {
+            sh 'pwd'
             }
         }
 
