@@ -4,6 +4,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
 
+    def sonarScannerImage = docker.build("sonar-scanner-image", "./dockerfiles/sonarscan")
     stages {
         stage('Build') {
             steps {
@@ -11,10 +12,10 @@ pipeline {
                 echo 'Building..'
             }
         }
-        stage('Code compliance') {
-            def sonarScannerImage = docker.build("sonar-scanner-image", "./dockerfiles/sonarscan")
-            sonarScannerImage.withRun('-ti -v ./src:/can/src --network host') {
-            sh 'pwd'
+
+        sonarScannerImage.withRun('-ti -v ./src:/can/src --network host') {
+                stage('Code compliance') {
+                }
             }
         }
 
