@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        sonarScannerImage.withRun('-ti -v ./src:/can/src --network host') {
+        sonarScannerImage.inside('-ti -v ./src:/can/src --network host') {
                 stage('Code compliance') {
                     steps {
                         echo 'Code compliance testing...'
