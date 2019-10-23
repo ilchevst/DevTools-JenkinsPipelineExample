@@ -1,4 +1,6 @@
 pipeline {
+    agent any
+
     options {
         newContainerPerStage()
         timeout(time: 30, unit: 'MINUTES')
