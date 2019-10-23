@@ -4,7 +4,6 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
 
-    def sonarScannerImage = docker.build("sonar-scanner-image", "./dockerfiles/sonarscan")
     stages {
         stage('Build') {
             steps {
