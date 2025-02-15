@@ -1,16 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker'
-            args '-ti -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker'
-        }
-    }
-
-    options {
-        newContainerPerStage()
-        timeout(time: 30, unit: 'MINUTES')
-    }
-
+    agent any
     stages {
         stage('Build') {
             steps {
