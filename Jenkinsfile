@@ -10,7 +10,7 @@ pipeline {
 
         stage('Unit tests') {
             steps {
-                echo 'Testing....'
+                echo 'Testing what have to be tested'
             }
         }
 
